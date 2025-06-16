@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Informações de IP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Consultar informações de IP</h1>
+    <input type="text" id="ipInput" placeholder="Digite o IP ou deixe em branco para seu IP">
+    <button onclick="buscarIP()">Buscar</button>
+
+    <div id="historicoContainer">
+        <h2>IPs consultados</h2>
+        <div id="historico"></div>
+    </div>
+
+    <table id="resultadoTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Propriedade</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaDados"></tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
