@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Informações de IP</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Consulta de IP</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <h1>Consultar informações de IP</h1>
-    <input type="text" id="ipInput" placeholder="Digite o IP ou deixe em branco para seu IP">
-    <button onclick="buscarIP()">Buscar</button>
 
-    <div id="historicoContainer">
-        <h2>IPs consultados</h2>
-        <div id="historico"></div>
-    </div>
+  <h1>Consulta de IP</h1>
 
-    <table id="resultadoTable" style="display: none;">
-        <thead>
-            <tr>
-                <th>Propriedade</th>
-                <th>Valor</th>
-            </tr>
-        </thead>
-        <tbody id="tabelaDados"></tbody>
-    </table>
+  <div id="alert-info"></div>
 
-    <script src="script.js"></script>
+  <input type="text" id="inputIpAddress" placeholder="Digite um IP">
+  <button id="btnGetIp">Buscar IP</button>
+
+  <div class="tabela" style="display: none;">
+    <table id="ipTable"></table>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

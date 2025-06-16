@@ -1,53 +1,91 @@
-const token = "9922e61d73a5d3"; // Insira seu token aqui
-let historico = [];
+const ipJson = [];
+const btnGetIp = document.querySelector('#btnGetIp');
+const inputIpAddress = document.querySelector('#inputIpAddress');
+const ipTable = document.querySelector('#ipTable');
+let ipTableBody;
 
-function buscarIP() {
-    const ip = document.getElementById("ipInput").value.trim();
-    const url = ip ? `https://ipinfo.io/${ip}/json?token=${token}` : `https://ipinfo.io/json?token=${token}`;
+btnGetIp.addEventListener('click', addIp);
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            mostrarTabela(data);
-            salvarHistorico(data.ip || ip || "IP Desconhecido");
-        })
-        .catch(err => {
-            alert("Erro ao buscar o IP.");
-            console.error(err);
-        });
-}
+inputIpAddress.addEventListener('keypress', function (e) {
+  if (e.key === "Enter") addIp();
+});
 
-function mostrarTabela(dados) {
-    const tabela = document.getElementById("tabelaDados");
-    tabela.innerHTML = "";
-    for (const chave in dados) {
-        const valor = dados[chave];
-        const linha = `<tr><td>${chave}</td><td>${valor}</td></tr>`;
-        tabela.innerHTML += linha;
-    }
-    document.getElementById("resultadoTable").style.display = "table";
-}
+function addIp() {
+  const ipAddress = inputIpAddress.value.trim();
 
-function salvarHistorico(ip) {
-    historico.unshift(ip); // adiciona no início
-    renderizarHistorico();
-}
+  if (!ipAddress) {
+    const alertInfo = document.querySelector('#alert-info');
+    alertInfo.innerHTML = `
+      <div class="alert alert-warning">
+        <strong>Opa!</strong> Parece que você não digitou um IP válido.
+      </div>
+    `;
+    return;
+  }
 
-function excluirHistorico(index) {
-    historico.splice(index, 1);
-    renderizarHistorico();
-}
+  if (ipJson.length === 0) {
+    document.querySelector('.tabela').style.display = 'block';
+    ipTable.innerHTML = `
+      <thead>
+        <tr><th>IP</th><th>Org</th><th>Country</th><th>City</th><th>Remover</th></tr>
+      </thead>
+      <tbody></tbody>
+    `;
+  }
 
-function renderizarHistorico() {
-    const container = document.getElementById("historico");
-    container.innerHTML = "";
-    historico.forEach((ip, index) => {
-        const div = document.createElement("div");
-        div.className = "historico-item";
-        div.innerHTML = `
-            <span>${ip}</span>
-            <button onclick="excluirHistorico(${index})">Excluir</button>
-        `;
-        container.appendChild(div);
+  const exists = ipJson.some(ipObj => ipObj.ip === ipAddress);
+  if (exists) return;
+
+  ipTableBody = document.querySelector('tbody');
+  const url = `https://ipinfo.io/${ipAddress}/json?token=ea38c5437881ca`; // substitua pelo seu token
+
+  fetch(url)
+    .then(response => response.json())
+    .then(values => {
+      const ip = values.ip || ipAddress;
+      const city = values.city || '-';
+      const country = values.country || '-';
+      const org = values.org ? values.org.substring(values.org.indexOf(' ') + 1) : '-';
+
+      const addJson = {
+        ip,
+        city,
+        country,
+        org,
+        close: `<i class="fa fa-times ${ipJson.length}" style="font-size: 20px;"></i>`
+      };
+
+      ipJson.unshift(addJson); // adiciona no topo
+      render();
+    })
+    .catch(() => {
+      alert("Erro ao buscar IP. Verifique se ele é válido.");
     });
+}
+
+function render() {
+  let textTable = "";
+
+  for (let i = 0; i < ipJson.length; i++) {
+    textTable += `
+      <tr>
+        <td>${ipJson[i].ip}</td>
+        <td>${ipJson[i].org}</td>
+        <td>${ipJson[i].country}</td>
+        <td>${ipJson[i].city}</td>
+        <td><a href="#">${ipJson[i].close}</a></td>
+      </tr>
+    `;
+  }
+
+  ipTableBody.innerHTML = textTable;
+
+  const icons = document.querySelectorAll('i.fa-times');
+
+  icons.forEach((icon, index) => {
+    icon.addEventListener('click', () => {
+      ipJson.splice(index, 1);
+      render();
+    });
+  });
 }
