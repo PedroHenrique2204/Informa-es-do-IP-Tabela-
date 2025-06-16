@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background: #f9f9f9;
+  background: #4150d6;
 }
 
 input, button {
@@ -11,8 +11,8 @@ input, button {
 }
 
 button {
-  background-color: #007bff;
-  color: white;
+  background-color: #007bffee;
+  color: rgb(255, 255, 255);
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -26,12 +26,12 @@ table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
-  background: white;
+  background: rgb(118, 119, 201);
 }
 
 th, td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   text-align: left;
 }
 
